@@ -1,0 +1,10 @@
+# build output
+build/
+
+# vs files
+.vs/
+*.opensdf
+*.sdf
+*.user
+*.suo
+*.aps

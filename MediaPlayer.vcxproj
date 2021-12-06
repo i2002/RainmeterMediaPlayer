@@ -26,6 +26,7 @@
   <ItemGroup>
     <None Include=".gitignore" />
     <None Include="cpp.hint" />
+    <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />

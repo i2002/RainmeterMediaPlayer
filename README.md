@@ -42,7 +42,8 @@ PlayerType=Title
     ``` 
     with
     ```
-    Measure=Plugin\nPlugin=MediaPlayer.dll
+    Measure=Plugin
+    Plugin=MediaPlayer.dll
     ```
 - save the file and reload the skin
 

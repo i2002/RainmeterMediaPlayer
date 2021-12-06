@@ -1,4 +1,4 @@
-#Media Player Rainmeter plugin
+# Media Player Rainmeter plugin
 This plugin implements `NowPlaying` measure functionality for all media players that show up in Windows 10 volume change notification (including web based ones, Spotify).\
 Any skin that works with the `NowPlaying` measure can be modified to work with this plugin.
 
@@ -31,7 +31,19 @@ PlayerType=Title
 
 ### Modify other skins that use NowPlaying
 - find the `.ini` file where the `NowPlaying` measures are defined
-- replace `Measure=NowPlaying` or `Measure=Plugin\nPlugin=NowPlaying` with `Measure=Plugin\nPlugin=MediaPlayer.dll`
+- replace
+    ```
+    Measure=NowPlaying
+    ```
+    or 
+    ```
+    Measure=Plugin
+    Plugin=NowPlaying
+    ``` 
+    with
+    ```
+    Measure=Plugin\nPlugin=MediaPlayer.dll
+    ```
 - save the file and reload the skin
 
 

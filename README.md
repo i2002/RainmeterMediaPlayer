@@ -8,6 +8,8 @@ Any skin that works with the `NowPlaying` measure can be modified to work with t
 ## Requirements
 - newest stable Rainmeter release
 - Windows 10 (version 1809 or newer)
+- [Microsoft C and C++ (MSVC) runtime libraries](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist) 14.20 or higher for the platform (x86 or x64) that Rainmeter is installed\
+_(or you can download the `static` version that bundles the C++ runtime into the executable)_
 
 
 ## Installation

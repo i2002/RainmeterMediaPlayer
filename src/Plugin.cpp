@@ -60,6 +60,10 @@ PLUGIN_EXPORT void Reload(void* data, void* rm, double* maxValue)
         t = PlayerType::STATUS;
     else if (type_name == L"Volume")
         t = PlayerType::VOLUME;
+#ifdef _DEBUG
+    else if (type_name == L"UpdateTick")
+        t = PlayerType::UPDATE_TICK;
+#endif
     else
         RmLogF(rm, LOG_ERROR, L"[MediaPlayer.dll] Unknown player action: %ls", t);
 

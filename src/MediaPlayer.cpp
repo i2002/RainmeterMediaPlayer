@@ -75,6 +75,11 @@ double MediaPlayer::Update()
 
 	case PlayerType::VOLUME:
 		return volume;
+
+#ifdef _DEBUG
+	case PlayerType::UPDATE_TICK:
+		return updateTick;
+#endif
 	}
 
 	return 0.0;
@@ -300,6 +305,9 @@ void MediaPlayer::UpdateData()
 	auto session = m.GetCurrentSession();
 	if (session == nullptr)
 	{
+#ifdef _DEBUG
+		updateTick = updateTick == 1 ? 2 : 1;
+#endif
 		ResetValues();
 	}
 	else
@@ -311,6 +319,9 @@ void MediaPlayer::UpdateData()
 		}
 		catch (hresult_error const &ex)
 		{
+#ifdef _DEBUG
+			updateTick = updateTick == 3 ? 4 : 3;
+#endif
 			ResetValues();
 			updateError = ex.message();
 			valueUpdated.notify_one();
@@ -321,6 +332,9 @@ void MediaPlayer::UpdateData()
 		auto timeline = session.GetTimelineProperties();
 		auto newPlayerName = session.SourceAppUserModelId();
 
+#ifdef _DEBUG
+		updateTick = updateTick == 5 ? 6 : 5;
+#endif
 		UpdateCover(newPlayerName, props);
 		UpdateValues(newPlayerName, props, playback, timeline);
 	}

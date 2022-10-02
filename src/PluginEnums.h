@@ -48,5 +48,6 @@ enum class PlayerType
     SHUFFLE,
     STATE,
     STATUS,
-    VOLUME
+    VOLUME,
+    UPDATE_TICK
 };

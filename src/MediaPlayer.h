@@ -94,6 +94,7 @@ class MediaPlayer
 	int state = 0;
 	int status = 0;
 	int volume = 0;
+	int updateTick = 0;
 
 public:
 	MediaPlayer(void*);

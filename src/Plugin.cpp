@@ -21,47 +21,48 @@ PLUGIN_EXPORT void Initialize(void** data, void* rm)
 PLUGIN_EXPORT void Reload(void* data, void* rm, double* maxValue)
 {
     MediaPlayer* player = (MediaPlayer*)data;
-    hstring type_name = RmReadString(rm, L"PlayerType", L"");
+    wstring type_name = wstring(RmReadString(rm, L"PlayerType", L""));
+    transform(type_name.begin(), type_name.end(), type_name.begin(), towlower);
     PlayerType t = PlayerType::UNKNOWN;
 
     if (type_name == L"")
         RmLog(rm, LOG_ERROR, L"[MediaPlayer.dll] PlayerType measure option not found");
-    else if (type_name == L"Artist")
+    else if (type_name == L"artist")
         t = PlayerType::ARTIST;
-    else if (type_name == L"Album")
+    else if (type_name == L"album")
         t = PlayerType::ALBUM;
-    else if (type_name == L"Title")
+    else if (type_name == L"title")
         t = PlayerType::TITLE;
-    else if (type_name == L"Number")
+    else if (type_name == L"number")
         t = PlayerType::NUMBER;
-    else if (type_name == L"Year")
+    else if (type_name == L"year")
         t = PlayerType::YEAR;
-    else if (type_name == L"Genre")
+    else if (type_name == L"genre")
         t = PlayerType::GENRE;
-    else if (type_name == L"Cover")
+    else if (type_name == L"cover")
         t = PlayerType::COVER;
-    else if (type_name == L"File")
+    else if (type_name == L"file")
         t = PlayerType::FILE;
-    else if (type_name == L"Duration")
+    else if (type_name == L"duration")
         t = PlayerType::DURATION;
-    else if (type_name == L"Position")
+    else if (type_name == L"position")
         t = PlayerType::POSITION;
-    else if (type_name == L"Progress")
+    else if (type_name == L"progress")
         t = PlayerType::PROGRESS;
-    else if (type_name == L"Rating")
+    else if (type_name == L"rating")
         t = PlayerType::RATING;
-    else if (type_name == L"Repeat")
+    else if (type_name == L"repeat")
         t = PlayerType::REPEAT;
-    else if (type_name == L"Shuffle")
+    else if (type_name == L"shuffle")
         t = PlayerType::SHUFFLE;
-    else if (type_name == L"State")
+    else if (type_name == L"state")
         t = PlayerType::STATE;
-    else if (type_name == L"Status")
+    else if (type_name == L"status")
         t = PlayerType::STATUS;
-    else if (type_name == L"Volume")
+    else if (type_name == L"volume")
         t = PlayerType::VOLUME;
 #ifdef _DEBUG
-    else if (type_name == L"UpdateTick")
+    else if (type_name == L"updatetick")
         t = PlayerType::UPDATE_TICK;
 #endif
     else

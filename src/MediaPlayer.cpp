@@ -128,44 +128,45 @@ void MediaPlayer::ExecuteBang(LPCWSTR args)
 	wstringstream sstr(args);
 	wstring command_name, val;
 	sstr >> command_name >> val;
+	transform(command_name.begin(), command_name.end(), command_name.begin(), towlower);
 
-	if (command_name == L"Pause")
+	if (command_name == L"pause")
 		PushMessage(PlayerActions::PAUSE);
-	else if (command_name == L"Play")
+	else if (command_name == L"play")
 		PushMessage(PlayerActions::PLAY);
-	else if (command_name == L"PlayPause")
+	else if (command_name == L"playpause")
 		PushMessage(PlayerActions::PLAY_PAUSE);
-	else if (command_name == L"Stop")
+	else if (command_name == L"stop")
 		PushMessage(PlayerActions::STOP);
-	else if (command_name == L"Next")
+	else if (command_name == L"next")
 		PushMessage(PlayerActions::NEXT);
-	else if (command_name == L"Previous")
+	else if (command_name == L"previous")
 		PushMessage(PlayerActions::PREVIOUS);
-	else if (command_name == L"OpenPlayer")
+	else if (command_name == L"openplayer")
 		PushMessage(PlayerActions::OPEN_PLAYER);
-	else if (command_name == L"ClosePlayer")
+	else if (command_name == L"closeplayer")
 		PushMessage(PlayerActions::CLOSE_PLAYER);
-	else if (command_name == L"TogglePlayer")
+	else if (command_name == L"toggleplayer")
 		PushMessage(PlayerActions::TOGGLE_PLAYER);
-	else if (command_name == L"SetPosition")
+	else if (command_name == L"setposition")
 	{
 		int position = ParseIntArg(val, 0);
 		bool abs = val[0] != '+' && val[0] != '-';
 		PushMessage(PlayerActions::SET_POSITION, position, abs);
 	}
-	else if (command_name == L"SetRating")
+	else if (command_name == L"setrating")
 	{
 		PushMessage(PlayerActions::SET_RATING, ParseIntArg(val, 5));
 	}
-	else if (command_name == L"SetShuffle")
+	else if (command_name == L"setshuffle")
 	{
 		PushMessage(PlayerActions::SET_SHUFFLE, ParseIntArg(val));
 	}
-	else if (command_name == L"SetRepeat")
+	else if (command_name == L"setrepeat")
 	{
 		PushMessage(PlayerActions::SET_REPEAT, ParseIntArg(val));
 	}
-	else if (command_name == L"SetVolume")
+	else if (command_name == L"setvolume")
 	{
 		int position = ParseIntArg(val);
 		bool abs = val[0] != '+' && val[0] != '-';

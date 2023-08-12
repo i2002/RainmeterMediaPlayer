@@ -65,7 +65,7 @@ PLUGIN_EXPORT void Reload(void* data, void* rm, double* maxValue)
         t = PlayerType::UPDATE_TICK;
 #endif
     else
-        RmLogF(rm, LOG_ERROR, L"[MediaPlayer.dll] Unknown player action: %ls", t);
+        RmLogF(rm, LOG_ERROR, L"[MediaPlayer.dll] Unknown player action: %ls", type_name.c_str());
 
     if(t == PlayerType::PROGRESS || t == PlayerType::VOLUME)
         *maxValue = 100.0;

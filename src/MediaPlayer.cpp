@@ -470,10 +470,16 @@ hstring MediaPlayer::JoinGenres(IVectorView<hstring> genres)
 	return result;
 }
 
+constexpr auto TIME_BUFFER = 128;
 hstring MediaPlayer::FormatTime(int time)
 {
-	WCHAR c[20];
-    swprintf(c, 20, L"%02d:%02d", time / 60, time % 60);
+	WCHAR c[TIME_BUFFER];
+	if (time >= 3600) {
+		swprintf(c, TIME_BUFFER, L"%d:%02d:%02d", time / 3600, time / 60 % 60, time % 60);
+	}
+	else {
+		swprintf(c, TIME_BUFFER, L"%02d:%02d", time / 60, time % 60);
+	}
 	return c;
 }
 

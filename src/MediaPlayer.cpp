@@ -380,16 +380,25 @@ void MediaPlayer::UpdateValues(hstring newPlayerName, MediaProperties props, Pla
 	genre = JoinGenres(props.Genres());
 	file = L"";
 	duration = timeline != nullptr ? GetDuration(timeline.StartTime(), timeline.EndTime()) : 0;
-	durationStr = FormatTime(duration);
 	position = timeline != nullptr ? GetPosition(timeline.Position()) : 0;
-	positionStr = FormatTime(position);
-	progress = duration != 0 ? position * 100 / duration : 0;
 	rating = 5;
 	repeat = (playback != nullptr && playback.AutoRepeatMode() != nullptr) ? (playback.AutoRepeatMode().Value() != MediaPlaybackAutoRepeatMode::None) : 0;
 	shuffle = (playback != nullptr && playback.IsShuffleActive() != nullptr) ? playback.IsShuffleActive().Value() : 0;
 	state = playback != nullptr ? GetState(playback.PlaybackStatus()) : 0;
 	status = playback != nullptr ? GetStatus(playback.PlaybackStatus()) : 0;
 	volume = 0;
+
+	// smooth time position
+	if (timeline != nullptr && state == 1 && duration != 0) {
+		auto lastUpdated = timeline.LastUpdatedTime().time_since_epoch();
+		auto now = clock::now().time_since_epoch();
+		int delay = GetDuration(lastUpdated, now);
+		position += delay;
+	}
+
+	durationStr = FormatTime(duration);
+	positionStr = FormatTime(position);
+	progress = duration != 0 ? position * 100 / duration : 0;
 }
 
 void MediaPlayer::ResetValues()

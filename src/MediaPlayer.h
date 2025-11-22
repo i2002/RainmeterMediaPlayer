@@ -62,6 +62,7 @@ class MediaPlayer
 	void* rm;
 	MediaSessionManager m = nullptr;
 	PlayerType type = PlayerType::UNKNOWN;
+	bool disable_cover_crop = false;
 
 	// multithreading
 	queue<tuple <PlayerActions, int, bool>> messageQueue;
@@ -100,7 +101,7 @@ public:
 	MediaPlayer(void*);
 	~MediaPlayer();
 
-	void Reload(PlayerType);
+	void Reload(PlayerType, bool);
 	double Update();
 	LPCWSTR GetString();
 	void ExecuteBang(LPCWSTR);

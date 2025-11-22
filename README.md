@@ -31,6 +31,12 @@ PluginName=MediaPlayer.dll
 PlayerType=Title
 ```
 
+> Note that for the Spotify client on some versions, the cover art includes a spotify banner below the actual art.
+>
+> This plugin automatically detects if there are transparent borders on the spotify cover art and crops the image to show only the actual cover art.
+>
+> In case detection doesn't work properly, you can disable cropping completely by adding configuration `DisableCoverCropping=True` in the cover measure
+
 ### Modify other skins that use NowPlaying
 - find the `.ini` file where the `NowPlaying` measures are defined
 - replace

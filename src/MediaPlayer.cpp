@@ -22,10 +22,11 @@ MediaPlayer::~MediaPlayer()
 	workerThread.join();
 }
 
-void MediaPlayer::Reload(PlayerType t)
+void MediaPlayer::Reload(PlayerType t, bool disable_cover_crop)
 {
 	lock_guard<mutex> guard(typeMutex);
 	type = t;
+	this->disable_cover_crop = disable_cover_crop;
 }
 
 double MediaPlayer::Update()
@@ -358,9 +359,12 @@ void MediaPlayer::UpdateCover(hstring newPlayerName, MediaProperties props)
 	else if (path == L"" || props.Title() != title || props.Artist() != artist || props.AlbumTitle() != album || newPlayerName != playerName)
 	{
 		path = ImageUtils::SaveCover(props.Thumbnail());
+		bool transparentBorders = ImageUtils::CoverHasTransparentBorder(path);
 
-		if (newPlayerName == L"Spotify.exe")
+		if (!disable_cover_crop && newPlayerName == L"Spotify.exe" && ImageUtils::CoverHasTransparentBorder(path))
+		{
 			path = ImageUtils::CropCover(path);
+		}
 	}
 	else
 		return;

@@ -31,5 +31,6 @@ using namespace winrt::Windows::Storage::Streams;
 namespace ImageUtils
 {
 	hstring SaveCover(IRandomAccessStreamReference);
+	bool CoverHasTransparentBorder(hstring);
 	hstring CropCover(hstring);
 }

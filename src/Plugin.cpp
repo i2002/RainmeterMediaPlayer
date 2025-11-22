@@ -24,6 +24,7 @@ PLUGIN_EXPORT void Reload(void* data, void* rm, double* maxValue)
     wstring type_name = wstring(RmReadString(rm, L"PlayerType", L""));
     transform(type_name.begin(), type_name.end(), type_name.begin(), towlower);
     PlayerType t = PlayerType::UNKNOWN;
+    bool disable_cover_crop = false;
 
     if (type_name == L"")
         RmLog(rm, LOG_ERROR, L"[MediaPlayer.dll] PlayerType measure option not found");
@@ -41,6 +42,11 @@ PLUGIN_EXPORT void Reload(void* data, void* rm, double* maxValue)
         t = PlayerType::GENRE;
     else if (type_name == L"cover")
         t = PlayerType::COVER;
+        wstring disable_cover_cropping_val = wstring(RmReadString(rm, L"DisableCoverCropping", L""));
+        if (disable_cover_cropping_val != L"")
+        {
+            disable_cover_crop = true;
+        }
     else if (type_name == L"file")
         t = PlayerType::FILE;
     else if (type_name == L"duration")
@@ -71,7 +77,7 @@ PLUGIN_EXPORT void Reload(void* data, void* rm, double* maxValue)
     if(t == PlayerType::PROGRESS || t == PlayerType::VOLUME)
         *maxValue = 100.0;
 
-    player->Reload(t);
+    player->Reload(t, disable_cover_crop);
 }
 
 PLUGIN_EXPORT double Update(void* data)

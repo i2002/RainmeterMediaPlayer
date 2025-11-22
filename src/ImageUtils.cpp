@@ -23,6 +23,77 @@ hstring ImageUtils::SaveCover(IRandomAccessStreamReference image)
 	return cover_file.Path();
 }
 
+bool ImageUtils::CoverHasTransparentBorder(hstring original)
+{
+    const int width = 300;
+    const int height = 300;
+    const int border = 33;
+
+    Bitmap cover(original.c_str());
+
+    if (cover.GetHeight() != height || cover.GetWidth() != width)
+    {
+        return false;
+    }
+
+    Rect r(0, 0, width, height);
+    BitmapData data;
+
+    if (cover.LockBits(&r, ImageLockModeRead, PixelFormat32bppARGB, &data) != Ok)
+    {
+        return false;
+    }
+
+    BYTE* base = static_cast<BYTE*>(data.Scan0);
+    int stride = data.Stride;
+
+    auto isTransparentPixel = [&](int x, int y) -> bool
+    {
+        BYTE* p = base + y * stride + x * 4;
+            
+        // ARGB layout is usually B,G,R,A in memory
+        BYTE a = p[3];
+        return a == 0;
+    };
+
+    auto checkStrip = [&](int x0, int y0, int x1, int y1) -> bool
+    {
+        for (int y = y0; y < y1; ++y)
+        {
+            for (int x = x0; x < x1; ++x)
+            {
+                if (!isTransparentPixel(x, y))
+                {
+                    cover.UnlockBits(&data);
+                    return false;
+                }
+            }
+        }
+        return true;
+    };
+
+    // Check left border: x = 0 .. 32
+    if (!checkStrip(0, 0, border, height))
+    {
+        return false;
+    }
+
+    // Check right border: x = 300-33 .. 299
+    if (!checkStrip(width - border, 0, width, height))
+    {
+        return false;
+    }
+
+    //// Check bottom border: x = 33 .. 300-33-1, y = 300-33 .. 299
+    //if (!checkStrip(border, height - 2 * border, width - border, height - 2 * border + 10))
+    //{
+    //    return false;
+    //}
+
+    cover.UnlockBits(&data);
+    return true;
+}
+
 hstring ImageUtils::CropCover(hstring original)
 {
     // folder
@@ -30,9 +101,9 @@ hstring ImageUtils::CropCover(hstring original)
     auto cropped_file = temp_folder.CreateFileAsync(L"rainmeter_media-player-cover_cropped.png", CreationCollisionOption::ReplaceExisting).get();
     
     // initialize gdi+
-    GdiplusStartupInput gdiplusStartupInput;
+    /*GdiplusStartupInput gdiplusStartupInput;
     ULONG_PTR gdiplusToken;
-    GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
+    GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);*/
     
     {
         // crop image
@@ -40,7 +111,7 @@ hstring ImageUtils::CropCover(hstring original)
         Graphics g(&b);
         Bitmap cover(original.c_str());
         Gdiplus::Rect r(0, 0, 300, 300);
-        g.DrawImage(&cover, r, 33, 0, 233, 233, UnitPixel);
+        g.DrawImage(&cover, r, 33, 0, 234, 234, UnitPixel);
 
         // save image
         const CLSID pngEncoderClsId = { 0x557cf406, 0x1a04, 0x11d3,{ 0x9a,0x73,0x00,0x00,0xf8,0x1e,0xf3,0x2e } }; // image/png  : {557cf406-1a04-11d3-9a73-0000f81ef32e}
@@ -48,7 +119,7 @@ hstring ImageUtils::CropCover(hstring original)
     }
     
     // gdi+ shutdown
-    GdiplusShutdown(gdiplusToken);
+    //GdiplusShutdown(gdiplusToken);
 
     return cropped_file.Path();
 }

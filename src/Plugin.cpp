@@ -41,12 +41,14 @@ PLUGIN_EXPORT void Reload(void* data, void* rm, double* maxValue)
     else if (type_name == L"genre")
         t = PlayerType::GENRE;
     else if (type_name == L"cover")
+    {
         t = PlayerType::COVER;
         wstring disable_cover_cropping_val = wstring(RmReadString(rm, L"DisableCoverCropping", L""));
         if (disable_cover_cropping_val != L"")
         {
             disable_cover_crop = true;
         }
+    }
     else if (type_name == L"file")
         t = PlayerType::FILE;
     else if (type_name == L"duration")
